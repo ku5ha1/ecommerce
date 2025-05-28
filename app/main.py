@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from random import randrange
+import psycopg
 
 app = FastAPI()
 
@@ -10,6 +11,10 @@ class Post(BaseModel):
     content: str
     published: bool = True
 
+try: 
+    conn = psycopg.connect(host="localhost", database="fastapi", user="psotgres", password="kushal")
+except Exception as e:
+    print(e)
 
 posts = [
     {"title": "title of post 1", "content": "content of post 1", "id": 1},
