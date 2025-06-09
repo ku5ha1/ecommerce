@@ -1,27 +1,12 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
-from sqlalchemy.orm import relationship
-from .app import Base
+from .app import Base 
+from sqlalchemy import Column, Integer, String, Boolean, TIMESTAMP, text
 
-class Speaker(Base):
-    __tablename__ = "speakers"
+class Post(Base):
+    __tablename__ = "posts"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
-    bio = Column(String)
-    company = Column(String)
-
-    talks = relationship("Talk", back_populates="speaker")
-
-class Talk(Base):
-    __tablename__ = "talks"
-
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    description = Column(String)
-    speaker_id = Column(Integer, ForeignKey("speakers.id"))
-    start_time = Column(DateTime)
-    end_time = Column(DateTime)
-
-    speaker = relationship("Speaker", back_populates="talks") 
-    
+    content = Column(String, nullable=False)
+    published = Column(Boolean, default=True)
+    created_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'))
     
