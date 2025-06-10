@@ -1,37 +1,12 @@
-from pydantic import BaseModel
-from datetime import datetime
-from typing import List, Optional
+from pydantic import BaseModel 
 
-class TalkBase(BaseModel):
-    title: str
-    description: str
-    start_time: datetime
-    end_time: datetime
-
-class TalkCreate(TalkBase):
-    speaker_id: int
-
-class Talk(TalkBase):
-    id: int
-    speaker_id: int
+class PostBase(BaseModel):
+    title :str
+    content: str 
 
     class Config:
-        orm_mode = True
+        orm_mode = True 
 
-class SpeakerBase(BaseModel):
-    name: str
-    bio: str
-    company: str
 
-class SpeakerCreate(SpeakerBase):
+class CreatePost(PostBase):
     pass
-
-class Speaker(SpeakerBase):
-    id: int
-    talks: List[Talk] = []
-
-    class Config:
-        orm_mode = True
-
-class SpeakerWithTalks(Speaker):
-    talks: List[Talk] = []
