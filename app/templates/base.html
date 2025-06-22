@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI Jinja2 Tailwind</title>
+    <link href="{{ url_for('static', path='/css/app.css') }}" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="text-center">
+        <h1 class="text-5xl font-bold text-blue-600 mb-4">{{ message }}</h1>
+        <p class="text-lg text-gray-700">This is a demo of FastAPI with Jinja2 and Tailwind CSS.</p>
+        <button class="mt-6 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            Click Me!
+        </button>
+    </div>
+</body>
+</html>

@@ -1,20 +1,17 @@
-from fastapi import FastAPI, HTTPException, Depends
-from sqlalchemy.orm import Session
-from . import models 
-from .schemas import CreatePost
-from .database import engine
-from .database import get_db
+from fastapi import FastAPI, Request 
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
 
-models.Base.metadata.create_all(bind=engine)
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-@app.get("/")
-def root():
-    return {"message": "FastAPI is working!"}
+templates = Jinja2Templates(directory="templates")
 
-@app.get("/posts")
-async def get_posts(db: Session = Depends(get_db)):
-    posts = db.query(models.Post).all()
-    return {"posts" : posts}
-
+@app.get('/', response_class=HTMLResponse)
+async def home(request: Request):
+    return templates.TemplateResponse(
+        name="base.html",
+        context={"request": request}
+    )
