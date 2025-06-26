@@ -4,6 +4,9 @@ from datetime import datetime, timedelta
 import os
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
+from sqlalchemy.orm import Session
+from db.database import get_db
+from models.user import User
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 if SECRET_KEY is None:
@@ -44,7 +47,7 @@ def decode_access_token(token: str):
             headers={"WWW-Authenticate": "Bearer"}
         )   
 
-async def get_current_user(token: str = Depends(oauth2_scheme)):
+async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     payload = decode_access_token(token)
     user_id = payload.get("sub") if isinstance(payload, dict) else None
 
@@ -53,4 +56,5 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token payload"
         )
-    return user_id
+    user = db.query(User).filter(User.id == int(user_id)).first()
+    return user
