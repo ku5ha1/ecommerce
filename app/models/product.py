@@ -11,3 +11,5 @@ class Product(Base):
     category_id = Column(Integer, ForeignKey("categories.id"))
 
     category = relationship("Category", back_populates="products")
+    order_items = relationship("OrderItem", back_populates="product")
+    cart_items = relationship("CartItem", back_populates="product")
