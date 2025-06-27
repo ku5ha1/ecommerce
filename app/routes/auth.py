@@ -17,7 +17,7 @@ async def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="username or Email already registered"
+            detail="Username or Email already registered"
         )
     hashed_password = hash_password(user_data.password)
     new_user = User(
