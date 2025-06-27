@@ -35,7 +35,7 @@ async def login(user_data: UserLogin, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == user_data.username).first()
 
     if user is None or not verify_password(user_data.password, str(user.hashed_password)):
-        raise HTTPException(
+        raise HTTPException(    
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid Username or Password"
         )
