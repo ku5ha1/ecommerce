@@ -5,8 +5,8 @@ import os
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from db.database import get_db
-from models.user import User
+from app.db.database import get_db
+from app.models.user import User
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 if SECRET_KEY is None:

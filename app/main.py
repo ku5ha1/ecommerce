@@ -5,7 +5,7 @@ from app.db.database import Base, engine
 app = FastAPI()
 
 def init_db():
-    Base.metadata.create_All(bind=engine)
+    Base.metadata.create_all(bind=engine)
 
 app.include_router(auth_router)
 
