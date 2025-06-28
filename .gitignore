@@ -1,5 +1,4 @@
 venv/
-
 pycache/
 __pycache__/
 *.pyc
@@ -7,3 +6,6 @@ __pycache__/
 .env
 
 learning.txt
+
+alembic.ini
+
