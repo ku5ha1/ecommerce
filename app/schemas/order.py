@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from order_item import OrderItemOut
+from app.schemas.order_item import OrderItemOut
 from typing import List
 
 class OrderCreate(BaseModel):

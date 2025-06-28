@@ -1,5 +1,5 @@
 from pydantic import BaseModel  
-from product import ProductOut
+from app.schemas.product import ProductOut
 
 class OrderItemCreate(BaseModel):
     order_id: int 
