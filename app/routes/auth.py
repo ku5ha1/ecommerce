@@ -13,7 +13,6 @@ async def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
         (User.username == user_data.username) |
         (User.email == user_data.email)
     ).first()
-
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
