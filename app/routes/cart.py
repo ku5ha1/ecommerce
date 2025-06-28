@@ -83,3 +83,38 @@ async def update_cart_item(product_id: int, qty: int, current_user: User = Depen
             status_code=400,
             detail=f"Error updating cart: {str(e)}"
         )
+
+@router.delete("/remove/{product_id}")
+async def delete_product_from_cart(
+    product_id: int, 
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    cart_item = db.query(CartItem).filter(
+        CartItem.product_id == product_id,
+        CartItem.user_id == current_user.id
+        ).first()
+    if not cart_item:
+        raise HTTPException(
+            status_code=404,
+            detail="Cart Item not found"
+        ) 
+    db.delete(cart_item)
+    db.commit()
+    return {"message": "Item removed from cart successfully"}
+
+@router.delete("/clear-all")
+async def clear_cart(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    cart_items = db.query(CartItem).filter(CartItem.user_id == current_user.id).all()
+    if not cart_items:
+        raise HTTPException(
+            status_code=404,
+            detail="Cart is already empty"
+        ) 
+    for i in cart_items:
+        db.delete(i)
+    db.commit()
+    return { "message" : "All items removed" }
