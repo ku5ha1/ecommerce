@@ -3,6 +3,7 @@ from app.routes.auth import router as auth_router
 from app.routes.categories import router as category_router
 from app.routes.products import router as product_router
 from app.db.database import Base, engine
+from app.routes.cart import router as cart_router
 
 app = FastAPI()
 
@@ -12,6 +13,7 @@ def init_db():
 app.include_router(auth_router)
 app.include_router(category_router)
 app.include_router(product_router)
+app.include_router(cart_router)
 
 @app.get("/ping")
 async def ping():
