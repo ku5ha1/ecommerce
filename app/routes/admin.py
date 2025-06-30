@@ -11,9 +11,10 @@ from app.schemas.product import ProductCreate, ProductOut
 from app.models.user import User
 from app.schemas.user import UserOut
 from app.schemas.category import CategoryCreate, CategoryOut
-from app.schemas.order import OrderOut
+from app.schemas.order import OrderOut, OrderStatusChange
 from typing import List, Optional
 from datetime import datetime
+from app.schemas.shipping_info import ShippingInfoOut
  
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -265,3 +266,49 @@ async def get_dashboard_stats(
             Product.quantity == 0
         ).count()
     }
+
+@router.get("/shipping-info/{order_id}", response_model=ShippingInfoOut)
+async def get_shipping_details(
+    order_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_required)
+):
+    order_detail = db.query(Order).filter(
+        Order.id == order_id
+    ).first()
+    if not order_detail:
+        raise HTTPException(
+            status_code=404,
+            detail="Order not found"
+        )
+    shipping_detail = order_detail.shipping_info
+    if not shipping_detail:
+        raise HTTPException(
+            status_code=404,
+            detail="Shipping details not found"
+        )
+    return shipping_detail
+
+@router.put("/order/status/{order_id}")
+async def update_order_status(
+    order_id: int, 
+    order_status: OrderStatusChange,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_required)
+):
+    order_to_update = db.query(Order).filter(
+        Order.id == order_id
+    ).first()
+    if not order_to_update:
+        raise HTTPException(
+            status_code=404,
+            detail="Order not found"
+        )
+    setattr(order_to_update, "status", order_status.status)
+    db.commit()
+    db.refresh(order_to_update)
+
+    return {"message": f"Order status changed to {order_status.status}"}
+
+    
+    

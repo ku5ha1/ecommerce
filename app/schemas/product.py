@@ -15,6 +15,8 @@ class ProductOut(BaseModel):
     id: int 
     name: str 
     price: float
+    description: str 
+    product_image: str 
     quantity: int
     category: CategoryOut
 

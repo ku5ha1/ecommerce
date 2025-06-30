@@ -10,11 +10,14 @@ from app.models.orderItem import OrderItem
 from app.schemas.order import OrderCreate
 from app.schemas.order_item import OrderItemCreate
 from datetime import datetime
+from app.schemas.shipping_info import ShippingInfoCreate
+from app.models.shipping_info import ShippingInfo
 
 router = APIRouter(prefix="/checkout", tags=["checkout"])
 
 @router.post("/")
 async def checkout(
+    shipping_info: ShippingInfoCreate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -52,6 +55,19 @@ async def checkout(
     db.add(new_order)
     db.commit()
     db.refresh(new_order)
+    shipping_data = ShippingInfo(
+        order_id = new_order.id,
+        full_name = shipping_info.full_name,
+        email = shipping_info.email,
+        phone = shipping_info.phone,
+        address = shipping_info.address,
+        city = shipping_info.city,
+        state = shipping_info.state,
+        country = shipping_info.country,
+        zip = shipping_info.zip
+    )
+    db.add(shipping_data)
+    db.commit()
 
     for item_data in order_items_data:
         order_item = OrderItem(
