@@ -46,7 +46,7 @@ async def checkout(
         })
     new_order = Order(
         user_id = current_user.id,
-        total_amout = total_amount,
+        total_amount = total_amount,
         created_At = datetime.now()
     )
     db.add(new_order)

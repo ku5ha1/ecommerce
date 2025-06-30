@@ -8,7 +8,7 @@ class Order(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id  = Column(Integer, ForeignKey("users.id"))
     total_amount = Column(Float)
-    created_At = Column(DateTime)
+    created_at = Column(DateTime)
 
     user = relationship("User", back_populates="orders")
     order_items = relationship("OrderItem", back_populates="order")

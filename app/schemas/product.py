@@ -1,10 +1,13 @@
 from pydantic import BaseModel 
 from app.models.product import Product
 from app.schemas.category import CategoryOut
+from typing import Optional
 
 class ProductCreate(BaseModel):
     name: str 
-    price: float
+    price: Optional[float] = None 
+    description: str
+    product_image: str
     quantity: int 
     category_id: int 
 
@@ -17,3 +20,4 @@ class ProductOut(BaseModel):
 
     class Config: 
         from_attributes = True
+    

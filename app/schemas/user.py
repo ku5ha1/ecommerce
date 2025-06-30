@@ -13,6 +13,7 @@ class UserOut(BaseModel):
     username: str
     email: str
     id: int
+    is_admin: bool
 
     class Config: 
         from_attributes = True 
