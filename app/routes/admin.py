@@ -188,7 +188,8 @@ async def view_all_orders(
 ):
     query = db.query(Order).options(
         joinedload(Order.order_items),
-        joinedload(Order.user)  
+        joinedload(Order.user),
+        joinedload(Order.shipping_info)
     )
     if user_id:
         query = query.filter(Order.user_id == user_id)
@@ -207,7 +208,8 @@ async def fetch_single_order(
 ):
     single_order = db.query(Order).options(
         joinedload(Order.order_items),
-        joinedload(Order.user)
+        joinedload(Order.user),
+        joinedload(Order.shipping_info)
     ).filter(
         Order.id == order_id
     ).first()
@@ -310,5 +312,3 @@ async def update_order_status(
 
     return {"message": f"Order status changed to {order_status.status}"}
 
-    
-    

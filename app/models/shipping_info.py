@@ -1,6 +1,13 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Enum as SQLEnum, DateTime
 from app.db.database import Base 
 from sqlalchemy.orm import relationship
+from enum import Enum
+from datetime import datetime
+
+
+class DeliveryMethod(str, Enum):
+    PICKUP = "pickup"
+    DELIVERY = "delivery"
 
 class ShippingInfo(Base):
     __tablename__ = "shippinginfo"
@@ -10,10 +17,12 @@ class ShippingInfo(Base):
     full_name = Column(String)
     email = Column(String) 
     phone = Column(Integer)
+    delivery_method = Column(SQLEnum(DeliveryMethod), nullable=False, server_default="delivery")
+    pickup_time = Column(DateTime, nullable=True)
     address = Column(String)
     city = Column(String)
-    state = Column(String) 
-    county = Column(String)
+    state = Column(String)  
+    country = Column(String)
     zip = Column(String)
 
     order = relationship("Order", back_populates="shipping_info")

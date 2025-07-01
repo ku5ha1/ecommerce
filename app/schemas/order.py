@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 from app.schemas.order_item import OrderItemOut
 from typing import List
+from app.schemas.shipping_info import ShippingInfoOut
 from app.schemas.user import UserOut
 from typing import Optional
 
@@ -28,6 +29,7 @@ class OrderOut(BaseModel):
     user_details: UserOut
     order_items: List[OrderItemOut]
     status: OrderStatusEnum = OrderStatusEnum.pending
+    shipping_info: Optional[ShippingInfoOut]
 
     class Config: 
         from_attributes = True

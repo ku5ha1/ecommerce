@@ -52,6 +52,6 @@ async def update_password(
     if not verify_password(passwords.old_password, str(current_user.hashed_password)):
         raise HTTPException(status_code=400, detail="Incorrect old password")
 
-    current_user.hashed_password = hash_password(passwords.new_password)
+    setattr(current_user, "hashed_password", hash_password(passwords.new_password))
     db.commit()
     return {"message": "Password updated successfully"}

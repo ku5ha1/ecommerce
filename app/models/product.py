@@ -1,5 +1,5 @@
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, ForeignKey, Integer, String, Float
+from sqlalchemy import Column, ForeignKey, Integer, Numeric, String, Float
 from app.db.database import Base
 
 class Product(Base):
@@ -9,8 +9,8 @@ class Product(Base):
     name = Column(String)
     description = Column(String)
     product_image = Column(String)
-    price = Column(Float, default=0)
-    quantity = Column(Integer)
+    price = Column(Numeric(10, 2), nullable=False)
+    quantity = Column(Integer, nullable=False)
     category_id = Column(Integer, ForeignKey("categories.id"))
     
 
