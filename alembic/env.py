@@ -1,15 +1,8 @@
 from logging.config import fileConfig
-import os
+
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from app.db.database import Base
-from dotenv import load_dotenv
-import app.models
-
-load_dotenv()
-DATABASE_URL = os.getenv("DATABASE_URL")
-if DATABASE_URL is None:
-    raise ValueError("Database URL not found")
 
 from alembic import context
 
@@ -69,7 +62,6 @@ def run_migrations_online() -> None:
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
-        url=DATABASE_URL
     )
 
     with connectable.connect() as connection:

@@ -6,7 +6,7 @@ from typing import Optional
 class ProductCreate(BaseModel):
     name: str 
     price: Optional[float] = None 
-    description: str
+    description: Optional[str] = None
     product_image: str
     quantity: int 
     category_id: int 

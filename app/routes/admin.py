@@ -32,6 +32,7 @@ async def create_product(product_data: ProductCreate,
         new_product = Product(
         name = product_data.name,
         quantity = product_data.quantity,
+        description = product_data.description,
         category_id = product_data.category_id,
         price=product_data.price,
         product_image = product_data.product_image
@@ -112,7 +113,8 @@ async def create_category(category: CategoryCreate,
         )
     try:
         new_category = Category(
-        name = category.name
+        name = category.name,
+        category_image = category.category_image
         )
         db.add(new_category)
         db.commit()
@@ -198,7 +200,20 @@ async def view_all_orders(
     if end_date:
         query = query.filter(Order.created_at <= end_date)
 
-    return query.order_by(desc(Order.created_at)).all()
+    orders = query.order_by(desc(Order.created_at)).all()
+    return [
+        {
+            "id": order.id,
+            "user_id": order.user_id,
+            "total_amount": order.total_amount,
+            "created_at": order.created_at,
+            "user_details": order.user,
+            "order_items": order.order_items,
+            "status": order.status,
+            "shipping_info": order.shipping_info
+        }
+        for order in orders
+    ]
 
 @router.get("/orders/{order_id}", response_model=OrderOut)
 async def fetch_single_order(
@@ -218,7 +233,16 @@ async def fetch_single_order(
             status_code=404,
             detail="Order not found"
         )
-    return single_order
+    return {
+        "id": single_order.id,
+        "user_id": single_order.user_id,
+        "total_amount": single_order.total_amount,
+        "created_at": single_order.created_at,
+        "user_details": single_order.user,
+        "order_items": single_order.order_items,
+        "status": single_order.status,
+        "shipping_info": single_order.shipping_info
+    }
 
 @router.get("/all-users", response_model=List[UserOut])
 async def get_all_users(
@@ -310,5 +334,5 @@ async def update_order_status(
     db.commit()
     db.refresh(order_to_update)
 
-    return {"message": f"Order status changed to {order_status.status}"}
+    return {"message": f"Order status changed to {order_status.status.value}"}
 

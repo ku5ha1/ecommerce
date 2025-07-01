@@ -40,4 +40,13 @@ async def get_single_order(
             status_code=404,
             detail="Order not found"
         )
-    return my_order 
+    return {
+        "id": my_order.id,
+        "user_id": my_order.user_id,
+        "total_amount": my_order.total_amount,
+        "created_at": my_order.created_at,
+        "user_details": my_order.user,  
+        "order_items": my_order.order_items, 
+        "status": my_order.status,
+        "shipping_info": my_order.shipping_info  
+    }
