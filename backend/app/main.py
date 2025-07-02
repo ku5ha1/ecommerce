@@ -8,8 +8,22 @@ from app.routes.checkout import router as checkout_router
 from app.routes.order import router as order_router
 from app.routes.admin import router as admin_router
 from app.routes.profile import router as profile_router
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:5173",
+    "http://localhost:3000"
+]
+
+app.add_middleware(
+    CORSMiddleware, 
+    allow_origins = origins,
+    allow_credentials = True,
+    allow_methods = ["*"],
+    allow_headers = ["*"]
+)
 
 def init_db():
     Base.metadata.create_all(bind=engine)
