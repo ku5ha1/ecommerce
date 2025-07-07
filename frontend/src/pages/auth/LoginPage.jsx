@@ -1,9 +1,36 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { use, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../services/axiosInstance";
+import { useAuth } from "../../context/AuthContext";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const { login } = useAuth()
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await api.post("/auth/login", {
+        username,
+        password,
+      });
+      console.log("Login Successful");
+      const { access_token } = response.data;
+      login(access_token)
+      navigate("/");
+    } catch (err) {
+      if (err.response) {
+        setError(err.response.data.message || "Login failed");
+      } else if (err.request) {
+        setError("No response from server");
+      } else {
+        setError("Login error: " + err.message);
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
@@ -12,7 +39,8 @@ function LoginPage() {
           <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
             Login to MyStore
           </h2>
-          <form className="space-y-5">
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+          <form className="space-y-5" onSubmit={handleLoginSubmit}>
             <div>
               <label
                 htmlFor="username"
@@ -25,6 +53,7 @@ function LoginPage() {
                 id="username"
                 name="username"
                 value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition"
               />
             </div>
@@ -40,9 +69,11 @@ function LoginPage() {
                 id="password"
                 name="password"
                 value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition"
               />
             </div>
+
             <button
               type="submit"
               className="w-full py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-600 transition"
@@ -54,7 +85,8 @@ function LoginPage() {
             New user?{" "}
             <Link
               to="/register"
-              className="text-blue-600 hover:underline font-medium transition-colors duration-200">
+              className="text-blue-600 hover:underline font-medium transition-colors duration-200"
+            >
               Register here
             </Link>
           </p>

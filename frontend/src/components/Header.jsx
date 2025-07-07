@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Assuming you have react-router-dom installed
+import { Link } from 'react-router-dom'; 
 
 function Header() {
   return (
