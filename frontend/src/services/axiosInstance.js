@@ -1,5 +1,4 @@
 import axios from "axios"
-import Header from "../components/Header"
 
 const api = axios.create({
   baseURL: 'http://localhost:8000',
@@ -16,4 +15,4 @@ api.interceptors.request.use((config) => {
   return config
 })
 
-export default api
+export default api 
