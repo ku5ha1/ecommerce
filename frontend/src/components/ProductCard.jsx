@@ -10,7 +10,6 @@ export default function ProductCard({ product }) {
       <p className="text-gray-600 text-sm mb-2 text-center">{product.description}</p>
       <p className="text-xl font-semibold text-green-700 mb-2">Rs.{product.price}</p>
       <span className="text-xs text-gray-400 mb-1">In stock: {product.quantity}</span>
-      <span className="text-xs bg-gray-100 rounded px-2 py-1 mt-1">{product.category?.name}</span>
     </div>
   );
 }
