@@ -3,6 +3,8 @@ import { getProducts } from "../services/productService";
 import { getCategories } from "../services/categoryService"; 
 import ProductCard from "../components/ProductCard";
 import CategoryCard from "../components/CategoryCard";
+import TestimonialsSlider from "../components/TestimonialsSlider";
+import FAQ from "../components/FAQ";
 
 function HomePage() {
   const [products, setProducts] = useState([]);
@@ -85,6 +87,9 @@ function HomePage() {
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
+
+      <TestimonialsSlider />
+      <FAQ />
     </div>
   );
 }

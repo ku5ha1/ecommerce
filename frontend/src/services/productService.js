@@ -8,4 +8,4 @@ export const getProducts = async () => {
 export const getProductsByCategory = async (categoryId) => {
     const response = await api.get(`/products/category/${categoryId}`)
     return await response.data
-}
+}   
