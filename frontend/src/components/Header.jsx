@@ -22,6 +22,11 @@ function Header() {
               Home
             </Link>
           </li>
+          <li>
+            <Link to="/shop" className="text-lg hover:text-blue-300 transition-colors duration-200">
+              Shop
+            </Link>
+          </li>
           <li className="relative">
             <Link to="/cart" className="text-lg hover:text-blue-300 transition-colors duration-200 flex items-center">
               Cart

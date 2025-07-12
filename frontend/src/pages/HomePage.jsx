@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getProducts } from "../services/ProductService";
+import { getProducts } from "../services/productService";
 import { getCategories } from "../services/categoryService"; 
 import ProductCard from "../components/ProductCard";
 import CategoryCard from "../components/CategoryCard";
