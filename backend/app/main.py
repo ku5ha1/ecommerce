@@ -28,7 +28,9 @@ origins = [
     "http://localhost:5173",
     "http://localhost:3000",
     "http://127.0.0.1:5173",
-    "http://127.0.0.1:3000"
+    "http://127.0.0.1:3000",
+    "https://ecommerce-beta-sooty-88.vercel.app",
+    "https://*.vercel.app"
 ]
 
 app.add_middleware(
@@ -50,6 +52,10 @@ app.include_router(checkout_router)
 app.include_router(order_router)
 app.include_router(admin_router)
 app.include_router(profile_router)
+
+@app.get("/")
+async def root():
+    return {"message": "Ecommerce API is running"}
 
 @app.get("/ping")
 async def ping():
