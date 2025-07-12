@@ -1,22 +1,18 @@
 import { useEffect, useState } from "react";
 import { getProducts } from "../services/ProductService";
-import { getCategories } from "../services/categoryService"; // Import the category service
+import { getCategories } from "../services/categoryService"; 
 import ProductCard from "../components/ProductCard";
-import CategoryCard from "../components/CategoryCard"; // Import the CategoryCard component
+import CategoryCard from "../components/CategoryCard";
 
 function HomePage() {
-  // State for Products
   const [products, setProducts] = useState([]);
-  const [productsLoading, setProductsLoading] = useState(true); // Renamed for clarity
-  const [productsError, setProductsError] = useState(null);    // Renamed for clarity
+  const [productsLoading, setProductsLoading] = useState(true); 
+  const [productsError, setProductsError] = useState(null);    
 
-  // State for Categories
   const [categories, setCategories] = useState([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [categoriesError, setCategoriesError] = useState(null);
 
-
-  // Effect to load Products
   useEffect(() => {
     const loadProducts = async () => {
       try {
@@ -31,10 +27,8 @@ function HomePage() {
     };
 
     loadProducts();
-  }, []); // Empty dependency array means this runs once on mount
+  }, []); 
 
-
-  // Effect to load Categories
   useEffect(() => {
     const loadCategories = async () => {
       try {
@@ -49,10 +43,8 @@ function HomePage() {
     };
 
     loadCategories();
-  }, []); // Empty dependency array means this runs once on mount
+  }, []); 
 
-
-  // Combined loading/error handling for initial render
   if (productsLoading || categoriesLoading) return <p className="text-center py-8">Loading...</p>;
   if (productsError || categoriesError) {
     return (
@@ -62,19 +54,16 @@ function HomePage() {
     );
   }
 
-  // Slice products to display only the first 8
   const productsToDisplay = products.slice(0, 8);
 
-  // Take the first 3 categories, assuming your API might return more
   const categoriesToDisplay = categories.slice(0, 3);
 
 
   return (
     <div>
-      {/* Banner Section */}
       <div className="relative h-64 bg-gray-800 text-white flex items-center justify-center overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1463320898484-cdee8141c787?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" // Replace with your actual banner image path
+          src="https://images.unsplash.com/photo-1463320898484-cdee8141c787?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
           alt="Banner"
           className="absolute inset-0 w-full h-full object-cover opacity-60"
         />
@@ -83,8 +72,6 @@ function HomePage() {
           <p className="text-xl md:text-2xl">Quality products, unbeatable prices.</p>
         </div>
       </div>
-
-      {/* --- New Category Section --- */}
       <h2 className="text-3xl font-bold text-center mt-10 mb-6">Our Categories</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-8">
         {categoriesToDisplay.map(category => (
@@ -92,7 +79,6 @@ function HomePage() {
         ))}
       </div>
 
-      {/* Products Section */}
       <h2 className="text-3xl font-bold text-center mt-10 mb-6">Featured Products</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-8">
         {productsToDisplay.map(product => (
