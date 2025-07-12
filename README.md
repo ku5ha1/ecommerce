@@ -12,7 +12,7 @@ Fullstack eCommerce app with a **FastAPI backend** and a **React frontend**.
 ## 🚀 Tech Stack
 
 - Backend: FastAPI + SQLAlchemy + JWT
-- Frontend: React (built using [Cursor](https://cursor.so))
+- Frontend: React (vibe coded)
 
 ---
 
