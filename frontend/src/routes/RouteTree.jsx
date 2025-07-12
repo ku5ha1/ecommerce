@@ -28,12 +28,10 @@ function RouteTree() {
         <Route path="profile" element={<ProfilePage />} />
       </Route>
       
-      {/* Admin Routes - Separate Layout */}
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminPage />} />
       </Route>
-      
-      {/* Admin Login - No Layout */}
+
       <Route path="/admin/login" element={<AdminLoginPage />} />
     </Routes>
   );
