@@ -39,7 +39,17 @@ async def login(user_data: UserLogin, db: Session = Depends(get_db)):
             detail="Invalid Username or Password"
         )
     access_token = create_access_token({"sub": str(user.id)})
-    return {"access_token": access_token, "token_type": "bearer", "message": "Login successful"}
+    return {
+        "access_token": access_token, 
+        "token_type": "bearer", 
+        "message": "Login successful",
+        "user": {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "is_admin": user.is_admin
+        }
+    }
 
 @router.post("/me", response_model=UserOut)
 async def read_current_user(current_user: User = Depends(get_current_user)):

@@ -18,8 +18,8 @@ function LoginPage() {
         password,
       });
       console.log("Login Successful");
-      const { access_token } = response.data;
-      login(access_token)
+      const { access_token, user } = response.data;
+      login(access_token, user)
       navigate("/");
     } catch (err) {
       if (err.response) {
