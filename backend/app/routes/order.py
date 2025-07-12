@@ -23,7 +23,23 @@ async def get_my_orders(
             status_code=404,
             detail="Looks empty here"
         )
-    return my_orders
+    
+    # Convert orders to include user_details
+    orders_with_user = []
+    for order in my_orders:
+        order_dict = {
+            "id": order.id,
+            "user_id": order.user_id,
+            "total_amount": order.total_amount,
+            "created_at": order.created_at,
+            "status": order.status,
+            "user_details": current_user,  # Use current user as user_details
+            "order_items": order.order_items,
+            "shipping_info": order.shipping_info
+        }
+        orders_with_user.append(order_dict)
+    
+    return orders_with_user
 
 @router.get("/{order_id}", response_model=OrderOut)
 async def get_single_order(
@@ -45,7 +61,7 @@ async def get_single_order(
         "user_id": my_order.user_id,
         "total_amount": my_order.total_amount,
         "created_at": my_order.created_at,
-        "user_details": my_order.user,  
+        "user_details": current_user,  # Use current user instead of my_order.user
         "order_items": my_order.order_items, 
         "status": my_order.status,
         "shipping_info": my_order.shipping_info  

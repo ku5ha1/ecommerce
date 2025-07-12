@@ -16,7 +16,7 @@ class ShippingInfo(Base):
     order_id = Column(Integer, ForeignKey("orders.id"))
     full_name = Column(String)
     email = Column(String) 
-    phone = Column(Integer)
+    phone = Column(String)  # Changed from Integer to String to handle large phone numbers
     delivery_method = Column(SQLEnum(DeliveryMethod, values_callable=lambda x: [e.value for e in x], native_enum=False), nullable=False, server_default="delivery")
     pickup_time = Column(DateTime, nullable=True)
     address = Column(String)

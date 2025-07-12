@@ -16,6 +16,21 @@ async def get_all_products(db: Session = Depends(get_db)):
     return products
 
 
+@router.get("/category/{category_id}", response_model=list[ProductOut])
+async def get_products_by_category(category_id: int, db: Session = Depends(get_db)):
+    # First check if category exists
+    category = db.query(Category).filter(Category.id == category_id).first()
+    if not category:
+        raise HTTPException(
+            status_code=404,
+            detail="Category not found"
+        )
+    
+    # Get products for this category
+    products = db.query(Product).filter(Product.category_id == category_id).all()
+    return products
+
+
 @router.get("/{product_id}", response_model=ProductOut)
 async def get_product(product_id: int, db: Session = Depends(get_db)):
     product = db.query(Product).filter(Product.id == product_id).first()

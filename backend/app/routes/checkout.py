@@ -30,7 +30,13 @@ async def checkout(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    print("=== CHECKOUT DEBUG ===")
+    print("Received shipping_info:", shipping_info.dict())
     print("DELIVERY METHOD TO DB:", shipping_info.delivery_method, shipping_info.delivery_method.value)
+    print("PICKUP TIME:", shipping_info.pickup_time, type(shipping_info.pickup_time))
+    print("CART ITEMS:", shipping_info.cart_items)
+    print("USER ID:", current_user.id)
+    print("====================")
     try:
         if shipping_info.delivery_method == DeliveryMethod.DELIVERY:
             if not all([shipping_info.address, shipping_info.city, shipping_info.country]):
@@ -50,10 +56,11 @@ async def checkout(
                     status_code=400,
                     detail="Pickup time must be between 10:00 AM and 4:00 PM"
                 )
+            # For pickup orders, we'll use the pickup location details
+            # No need to validate address fields for pickup
 
-        cart_items = db.query(CartItem).filter(
-            CartItem.user_id == current_user.id
-        ).all()
+        # Use cart items from request instead of database
+        cart_items = shipping_info.cart_items
 
         if not cart_items:
             raise HTTPException(
@@ -145,7 +152,6 @@ async def checkout(
             )
             db.add(order_item)
 
-        db.query(CartItem).filter(CartItem.user_id == current_user.id).delete()
         db.commit()
 
         return {
