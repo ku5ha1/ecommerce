@@ -47,8 +47,8 @@ function Header() {
               <li>
                 <button 
                   onClick={logout}
-                  className="text-lg hover:text-blue-300 transition-colors duration-200"
-                >
+              className="text-lg hover:text-blue-300 transition-colors duration-200"
+            >
                   Logout
                 </button>
               </li>
