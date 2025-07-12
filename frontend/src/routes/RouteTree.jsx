@@ -7,6 +7,7 @@ import CartPage from "../pages/CartPage";
 import ProductDetailPage from "../pages/ProductDetailPage";
 import ShopPage from "../pages/ShopPage";
 import CategoryDetailPage from "../pages/CategoryDetailPage";
+import CheckoutPage from "../pages/CheckoutPage";
 
 function RouteTree() {
   return (
@@ -19,6 +20,7 @@ function RouteTree() {
         <Route path="product/:id" element={<ProductDetailPage />} />
         <Route path="shop" element={<ShopPage />} />
         <Route path="category/:id" element={<CategoryDetailPage />} />
+        <Route path="checkout" element={<CheckoutPage />} />
       </Route>
     </Routes>
   );

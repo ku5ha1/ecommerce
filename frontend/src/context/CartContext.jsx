@@ -46,6 +46,10 @@ export const CartProvider = ({ children }) => {
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
 
+  const clearCart = () => {
+    setCart([]);
+  };
+
   const closeToast = () => {
     setToast(prev => ({ ...prev, isVisible: false }));
   };
@@ -57,6 +61,7 @@ export const CartProvider = ({ children }) => {
       removeFromCart, 
       updateQuantity, 
       getTotal,
+      clearCart,
       toast,
       closeToast
     }}>

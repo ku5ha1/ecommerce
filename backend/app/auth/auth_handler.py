@@ -48,13 +48,27 @@ def decode_access_token(token: str):
         )   
 
 async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
-    payload = decode_access_token(token)
-    user_id = payload.get("sub") if isinstance(payload, dict) else None
+    print("=== AUTH DEBUG ===")
+    print("Token received:", token)
+    print("SECRET_KEY:", SECRET_KEY)
+    print("ALGORITHM:", ALGORITHM)
+    
+    try:
+        payload = decode_access_token(token)
+        print("Decoded payload:", payload)
+        user_id = payload.get("sub") if isinstance(payload, dict) else None
+        print("User ID from token:", user_id)
 
-    if not user_id:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token payload"
-        )
-    user = db.query(User).filter(User.id == int(user_id)).first()
-    return user
+        if not user_id:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token payload"
+            )
+        user = db.query(User).filter(User.id == int(user_id)).first()
+        print("User found:", user)
+        print("==================")
+        return user
+    except Exception as e:
+        print("Auth error:", str(e))
+        print("==================")
+        raise

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; 
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
@@ -41,8 +41,8 @@ function Header() {
             <li>
               <button 
                 onClick={logout}
-                className="text-lg hover:text-blue-300 transition-colors duration-200"
-              >
+              className="text-lg hover:text-blue-300 transition-colors duration-200"
+            >
                 Logout
               </button>
             </li>
@@ -50,14 +50,14 @@ function Header() {
             <>
               <li>
                 <Link to="/login" className="text-lg hover:text-blue-300 transition-colors duration-200">
-                  Login
-                </Link>
-              </li>
-              <li>
+              Login
+            </Link>
+          </li>
+          <li>
                 <Link to="/register" className="text-lg hover:text-blue-300 transition-colors duration-200">
-                  Register
-                </Link>
-              </li>
+              Register
+            </Link>
+          </li>
             </>
           )}
         </ul>

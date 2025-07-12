@@ -5,7 +5,7 @@ const testimonials = [
     id: 1,
     name: "Sarah Johnson",
     role: "Happy Customer",
-    image: "https://www.freepik.com/free-ai-image/medium-shot-woman-working-as-lawyer_94482957.htm#fromView=search&page=1&position=47&uuid=7c9c5a83-cbf4-4f14-82e7-6a5c9bf9f312&query=sarah+johnson",
+    image: "https://images.unsplash.com/photo-1515463892140-58a22e37ff72?q=80&w=903&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     text: "Amazing products and excellent service! I love shopping here. The quality is outstanding and delivery was super fast.",
     rating: 5
   },
