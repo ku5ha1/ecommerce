@@ -34,6 +34,7 @@ function CheckoutPage() {
   }, [shippingData.delivery_method]);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
+  const [orderDetails, setOrderDetails] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const shippingCost = 50;
@@ -96,13 +97,23 @@ function CheckoutPage() {
       
       console.log('Order placed successfully:', response.data);
       
-      // Clear the cart after successful order
+      // Store order details before clearing cart
+      const orderDetails = {
+        itemsCount: cart.length,
+        total: total,
+        shippingData: { ...shippingData }
+      };
+      
+      // Clear the cart immediately after successful order
       clearCart();
       
       // Generate order number for display
       const newOrderNumber = 'ORD-' + Date.now();
       setOrderNumber(newOrderNumber);
       setOrderPlaced(true);
+      
+      // Store order details in state for display
+      setOrderDetails(orderDetails);
       
     } catch (error) {
       console.error('Error placing order:', error);
@@ -149,21 +160,6 @@ function CheckoutPage() {
     );
   }
 
-  if (cart.length === 0) {
-    return (
-      <div className="container mx-auto px-4 py-8 text-center">
-        <h2 className="text-2xl font-bold mb-4">Your Cart is Empty</h2>
-        <p className="text-gray-600 mb-4">Add some products to your cart before checkout.</p>
-        <button 
-          onClick={() => navigate('/')}
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-        >
-          Continue Shopping
-        </button>
-      </div>
-    );
-  }
-
   if (orderPlaced) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -178,20 +174,35 @@ function CheckoutPage() {
                       <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
               <h3 className="text-xl font-bold mb-4">Order Details</h3>
               <div className="space-y-2 text-left">
-                <p><strong>Items:</strong> {cart.length} products</p>
-                <p><strong>Total:</strong> Rs.{total}</p>
-                <p><strong>Delivery Method:</strong> {shippingData.delivery_method === 'pickup' ? 'Pickup' : 'Delivery'}</p>
+                <p><strong>Items:</strong> {orderDetails?.itemsCount || 0} products</p>
+                <p><strong>Total:</strong> Rs.{orderDetails?.total || 0}</p>
+                <p><strong>Delivery Method:</strong> {orderDetails?.shippingData.delivery_method === 'pickup' ? 'Pickup' : 'Delivery'}</p>
                 <p><strong>Payment Method:</strong> 
                   {paymentMethod === 'cod' && ' 💵 Cash on Delivery'}
                   {paymentMethod === 'pickup' && ' 🏪 Store Pickup'}
                 </p>
-                <p><strong>Shipping Address:</strong></p>
-                <p className="ml-4">
-                  {shippingData.full_name}<br />
-                  {shippingData.address}<br />
-                  {shippingData.city}, {shippingData.state} {shippingData.zip}<br />
-                  {shippingData.country}
-                </p>
+                {orderDetails?.shippingData.delivery_method === 'pickup' ? (
+                  <>
+                    <p><strong>Pickup Location:</strong></p>
+                    <p className="ml-4">
+                      <strong>YourStore HQ</strong><br />
+                      123 Main Street<br />
+                      Mumbai, MH 400001<br />
+                      India<br />
+                      <span className="text-sm text-gray-600">Pickup Time: {orderDetails?.shippingData.pickup_time ? new Date(orderDetails.shippingData.pickup_time).toLocaleString() : 'To be confirmed'}</span>
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p><strong>Shipping Address:</strong></p>
+                    <p className="ml-4">
+                      {orderDetails?.shippingData.full_name}<br />
+                      {orderDetails?.shippingData.address}<br />
+                      {orderDetails?.shippingData.city}, {orderDetails?.shippingData.state} {orderDetails?.shippingData.zip}<br />
+                      {orderDetails?.shippingData.country}
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           <button 
@@ -201,6 +212,21 @@ function CheckoutPage() {
             Continue Shopping
           </button>
         </div>
+      </div>
+    );
+  }
+
+  if (cart.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-8 text-center">
+        <h2 className="text-2xl font-bold mb-4">Your Cart is Empty</h2>
+        <p className="text-gray-600 mb-4">Add some products to your cart before checkout.</p>
+        <button 
+          onClick={() => navigate('/')}
+          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+        >
+          Continue Shopping
+        </button>
       </div>
     );
   }
@@ -420,28 +446,30 @@ function CheckoutPage() {
                       </label>
                     )}
 
-                    {/* Store Pickup - Available for both delivery and pickup orders */}
-                    <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                      paymentMethod === 'pickup' 
-                        ? 'border-blue-500 bg-blue-50' 
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}>
-                      <input
-                        type="radio"
-                        name="payment"
-                        value="pickup"
-                        checked={paymentMethod === 'pickup'}
-                        onChange={(e) => setPaymentMethod(e.target.value)}
-                        className="mr-3"
-                      />
-                      <div className="flex items-center">
-                        <div className="text-2xl mr-3">🏪</div>
-                        <div>
-                          <div className="font-semibold">Store Pickup</div>
-                          <div className="text-sm text-gray-600">Pay at store when collecting</div>
+                    {/* Store Pickup - Only for pickup orders */}
+                    {shippingData.delivery_method === 'pickup' && (
+                      <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                        paymentMethod === 'pickup' 
+                          ? 'border-blue-500 bg-blue-50' 
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}>
+                        <input
+                          type="radio"
+                          name="payment"
+                          value="pickup"
+                          checked={paymentMethod === 'pickup'}
+                          onChange={(e) => setPaymentMethod(e.target.value)}
+                          className="mr-3"
+                        />
+                        <div className="flex items-center">
+                          <div className="text-2xl mr-3">🏪</div>
+                          <div>
+                            <div className="font-semibold">Store Pickup</div>
+                            <div className="text-sm text-gray-600">Pay at store when collecting</div>
+                          </div>
                         </div>
-                      </div>
-                    </label>
+                      </label>
+                    )}
 
 
                   </div>

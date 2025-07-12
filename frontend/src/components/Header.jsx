@@ -38,14 +38,21 @@ function Header() {
             </Link>
           </li>
           {token ? (
-            <li>
-              <button 
-                onClick={logout}
-              className="text-lg hover:text-blue-300 transition-colors duration-200"
-            >
-                Logout
-              </button>
-            </li>
+            <>
+              <li>
+                <Link to="/profile" className="text-lg hover:text-blue-300 transition-colors duration-200">
+                  Profile
+                </Link>
+              </li>
+              <li>
+                <button 
+                  onClick={logout}
+                  className="text-lg hover:text-blue-300 transition-colors duration-200"
+                >
+                  Logout
+                </button>
+              </li>
+            </>
           ) : (
             <>
               <li>
